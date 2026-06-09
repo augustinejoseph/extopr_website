@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens from .claude/design_pattern.md — editorial ivory + cobalt, light-only.
+ * Tokens are semantic so a dark theme could be remapped later, but none ships now.
+ * Components reference tokens by name; no raw hex/pixel literals.
+ */
+@layer base {
+  :root {
+    /* Surfaces & ink */
+    --background: #fafaf7; /* ivory */
+    --ivory-2: #f3f2ec; /* alternating section band */
+    --surface: #ffffff; /* paper — cards, inputs */
+    --foreground: #16150f; /* ink — headings, primary text */
+    --ink-2: #3b3a33; /* body copy */
+    --muted-foreground: #76746a; /* ink-3 — secondary/meta */
+    --border: #e7e5dc; /* line */
+    --line-2: #dddbd0; /* stronger border, ghost outline */
+
+    /* Cobalt accent */
+    --primary: #2c4bff; /* cobalt */
+    --primary-hover: #1e36cc; /* cobalt-700 */
+    --primary-foreground: #ffffff;
+    --cobalt-tint: #ebeeff;
+    --cobalt-tint-2: #dee3ff;
+
+    /* State */
+    --success: #1f8a5b;
+    --destructive: #e0533a;
+    --destructive-foreground: #ffffff;
+
+    --ring: #2c4bff;
+
+    /* Radius */
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-pill: 999px;
+
+    /* Elevation — soft, warm, long */
+    --shadow-sm: 0 1px 2px rgba(22, 21, 15, 0.05);
+    --shadow: 0 14px 40px -18px rgba(22, 21, 15, 0.22);
+    --shadow-lg: 0 36px 80px -34px rgba(22, 21, 15, 0.3);
+    --shadow-cobalt: 0 24px 60px -22px rgba(44, 75, 255, 0.45);
+
+    /* Motion */
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    /* Layout */
+    --maxw: 1200px;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Headings use the display serif; line-height/tracking from design_pattern.md. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: #fff;
+  }
+
+  /* Respect reduced-motion globally; component animations opt back in deliberately. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

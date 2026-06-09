@@ -17,7 +17,11 @@ enrollment.
 
 ## Payload collections
 `Pages`, `Posts` (blog), `Media`, `Navigation`, reusable `SEO` group, `Redirects`,
-`CourseLanding` (marketing-only course teasers).
+`CourseLanding` (marketing-only course teasers), `Testimonials`, `Videos`, `Users`.
+Redesign adds: `Faculty`, `ExamCategories`, and a `SiteSettings` global (see
+[project_status.md](./project_status.md)). `HeroCarousel` stays — it now drives the full-width,
+image-only hero banner. **All course/faculty/exam content here is marketing copy — real data is
+LMS-owned.**
 
 ## Regional languages (i18n)
 The website serves content in multiple regional languages. Supported locales for now:

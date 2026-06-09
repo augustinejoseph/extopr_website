@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>xtopr — From aspirant to topper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
+<style>
+/* ============ TOKENS ============ */
+:root{
+  /* color */
+  --ivory:#FAFAF7;
+  --ivory-2:#F3F2EC;
+  --paper:#FFFFFF;
+  --ink:#16150F;
+  --ink-2:#3B3A33;
+  --ink-3:#76746A;
+  --line:#E7E5DC;
+  --line-2:#DDDBD0;
+  --cobalt:#2C4BFF;
+  --cobalt-700:#1E36CC;
+  --cobalt-tint:#EBEEFF;
+  --cobalt-tint-2:#DEE3FF;
+  --shadow-sm:0 1px 2px rgba(22,21,15,.05);
+  --shadow:0 14px 40px -18px rgba(22,21,15,.22);
+  --shadow-lg:0 36px 80px -34px rgba(22,21,15,.30);
+  --shadow-cobalt:0 24px 60px -22px rgba(44,75,255,.45);
+  /* spacing */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  /* radius */
+  --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:32px; --r-pill:999px;
+  --maxw:1200px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  background:var(--ivory);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+::selection{background:var(--cobalt);color:#fff}
+
+/* ============ TYPE ============ */
+.serif{font-family:'DM Serif Display',Georgia,serif;font-weight:400}
+h1,h2,h3{font-family:'DM Serif Display',Georgia,serif;font-weight:400;line-height:1.04;letter-spacing:-.01em}
+.eyebrow{
+  font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cobalt);display:inline-flex;align-items:center;gap:8px;
+}
+.eyebrow::before{content:"";width:18px;height:1.5px;background:var(--cobalt);display:inline-block}
+.lead{color:var(--ink-2);font-size:16px;line-height:1.6}
+
+/* ============ LAYOUT ============ */
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 22px}
+section{position:relative}
+.sec-pad{padding:var(--sp-9) 0}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-weight:700;font-size:15px;border-radius:var(--r-pill);
+  padding:14px 24px;transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .25s;
+  white-space:nowrap;line-height:1;
+}
+.btn-primary{background:var(--cobalt);color:#fff;box-shadow:var(--shadow-cobalt)}
+.btn-primary:hover{transform:translateY(-2px);background:var(--cobalt-700)}
+.btn-ghost{background:var(--paper);color:var(--ink);border:1.5px solid var(--line-2)}
+.btn-ghost:hover{transform:translateY(-2px);border-color:var(--ink);box-shadow:var(--shadow)}
+.btn-arrow{transition:transform .3s var(--ease)}
+.btn:hover .btn-arrow{transform:translateX(3px)}
+.btn-sm{padding:11px 18px;font-size:14px}
+
+/* ============ NAVBAR ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  transition:background .3s,box-shadow .3s,border-color .3s,backdrop-filter .3s;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(250,250,247,.72);
+  backdrop-filter:saturate(180%) blur(18px);
+  -webkit-backdrop-filter:saturate(180%) blur(18px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:23px;letter-spacing:-.04em;color:var(--ink);display:inline-flex;align-items:baseline}
+.logo b{color:var(--cobalt);font-weight:800}
+.logo .dot{width:6px;height:6px;border-radius:50%;background:var(--cobalt);display:inline-block;margin-left:2px;transform:translateY(-1px)}
+.nav-links{display:none;gap:30px;align-items:center}
+.nav-links a{font-size:14.5px;font-weight:600;color:var(--ink-2);transition:color .2s;position:relative}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.nav-login{display:none;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+
+/* ============ HERO ============ */
+.hero{padding:118px 0 var(--sp-8);position:relative;overflow:hidden}
+.hero-grid{display:grid;gap:var(--sp-7);align-items:center}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;background:var(--cobalt-tint);
+  color:var(--cobalt-700);font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:var(--r-pill);
+}
+.badge .pip{width:7px;height:7px;border-radius:50%;background:var(--cobalt);box-shadow:0 0 0 4px var(--cobalt-tint-2)}
+.hero h1{font-size:clamp(44px,12.5vw,72px);margin:22px 0 0}
+.hero h1 em{font-style:italic;color:var(--cobalt);position:relative}
+.hero-sub{margin-top:20px;font-size:17px;color:var(--ink-2);max-width:30ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hero-trust{display:flex;align-items:center;gap:14px;margin-top:30px}
+.avatars{display:flex}
+.avatars span{
+  width:34px;height:34px;border-radius:50%;border:2px solid var(--ivory);
+  margin-left:-10px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;
+}
+.avatars span:first-child{margin-left:0}
+.hero-trust-txt{font-size:13px;color:var(--ink-3);line-height:1.4}
+.hero-trust-txt b{color:var(--ink);font-weight:700}
+.stars{color:var(--cobalt);letter-spacing:1px;font-size:12px}
+
+/* phone mockup */
+.hero-visual{position:relative;display:flex;justify-content:center;align-items:center;min-height:430px}
+.phone{
+  position:relative;width:286px;height:580px;border-radius:44px;
+  background:#1b1a14;padding:11px;box-shadow:var(--shadow-lg);z-index:2;
+}
+.phone-screen{width:100%;height:100%;border-radius:34px;background:var(--ivory);overflow:hidden;position:relative}
+.notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:96px;height:24px;background:#1b1a14;border-radius:14px;z-index:5}
+.app{padding:34px 18px 18px;height:100%;display:flex;flex-direction:column;gap:14px}
+.app-top{display:flex;align-items:center;justify-content:space-between}
+.app-hi{font-size:11px;color:var(--ink-3);font-weight:600}
+.app-name{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-top:1px}
+.app-ava{width:34px;height:34px;border-radius:50%;background:var(--cobalt);display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+.app-card{background:var(--cobalt);color:#fff;border-radius:20px;padding:16px;position:relative;overflow:hidden}
+.app-card::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.10)}
+.app-card .k{font-size:10.5px;opacity:.85;font-weight:600}
+.ring{position:absolute;right:14px;top:14px;width:54px;height:54px;border-radius:50%;
+  background:conic-gradient(#fff 0 78%,rgba(255,255,255,.25) 78% 100%);display:grid;place-items:center}
+.ring::after{content:"78%";width:40px;height:40px;border-radius:50%;background:var(--cobalt);display:grid;place-items:center;font-size:11px;font-weight:800}
+.app-card h4{font-family:'Plus Jakarta Sans';font-weight:800;font-size:19px;margin-top:6px;letter-spacing:-.01em}
+.app-card p{font-size:10.5px;opacity:.88;margin-top:2px}
+.app-sec-t{font-size:11px;font-weight:700;color:var(--ink-2);display:flex;justify-content:space-between;align-items:center;margin-top:2px}
+.app-sec-t span{color:var(--cobalt);font-size:10px}
+.app-row{display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px}
+.app-row .ic{width:34px;height:34px;border-radius:10px;background:var(--cobalt-tint);display:grid;place-items:center;flex-shrink:0}
+.app-row .ic b{color:var(--cobalt);font-weight:800;font-size:13px}
+.app-row .t1{font-size:12px;font-weight:700;letter-spacing:-.01em}
+.app-row .t2{font-size:10px;color:var(--ink-3)}
+.app-row .live{margin-left:auto;font-size:9px;font-weight:700;color:#fff;background:var(--cobalt);padding:3px 7px;border-radius:6px;display:flex;align-items:center;gap:4px}
+.app-row .live i{width:5px;height:5px;border-radius:50%;background:#fff;display:inline-block;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* floating chips */
+.float{position:absolute;background:var(--paper);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);padding:11px 14px;display:flex;align-items:center;gap:10px;z-index:3}
+.float .fic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
+.float .fk{font-size:10px;color:var(--ink-3);font-weight:600}
+.float .fv{font-size:15px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.float-1{top:24px;left:-4px;animation:floaty 5s ease-in-out infinite}
+.float-2{bottom:60px;right:-10px;animation:floaty 6s ease-in-out infinite .6s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-glow{position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(44,75,255,.16),transparent 62%);
+  top:8%;left:50%;transform:translateX(-50%);z-index:0;pointer-events:none}
+
+/* ============ EXAM STRIP ============ */
+.strip{padding:8px 0 var(--sp-8);overflow:hidden}
+.strip-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:18px}
+.strip-head p{font-size:14px;color:var(--ink-3);font-weight:600}
+.chips{display:flex;gap:11px;overflow-x:auto;padding:6px 22px 14px;margin:0 -22px;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  scroll-snap-align:start;flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;
+  background:var(--paper);border:1.5px solid var(--line-2);border-radius:var(--r-pill);
+  padding:11px 18px;font-weight:700;font-size:14.5px;transition:all .25s var(--ease);
+}
+.chip:hover{border-color:var(--cobalt);color:var(--cobalt);transform:translateY(-2px);box-shadow:var(--shadow)}
+.chip .n{font-size:11px;font-weight:700;color:var(--ink-3);background:var(--ivory-2);border-radius:var(--r-pill);padding:2px 8px}
+.chip:hover .n{background:var(--cobalt-tint);color:var(--cobalt)}
+
+/* ============ WHY ============ */
+.sec-head{max-width:560px;margin-bottom:var(--sp-7)}
+.sec-head h2{font-size:clamp(32px,8vw,46px);margin-top:16px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.sec-head.center .eyebrow{justify-content:center}
+.feat-grid{display:grid;gap:18px}
+.feat{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:28px;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s;
+  position:relative;overflow:hidden;
+}
+.feat:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--line-2)}
+.feat-ic{width:54px;height:54px;border-radius:16px;background:var(--cobalt-tint);display:grid;place-items:center;margin-bottom:20px}
+.feat-stat{font-family:'DM Serif Display',serif;font-size:42px;line-height:1;color:var(--ink);letter-spacing:-.02em}
+.feat-stat .u{color:var(--cobalt)}
+.feat h3{font-family:'Plus Jakarta Sans';font-weight:800;font-size:18px;margin:14px 0 7px;letter-spacing:-.01em}
+.feat p{font-size:14.5px;color:var(--ink-2);line-height:1.6}
+
+/* ============ COURSES ============ */
+.courses{background:var(--ivory-2)}
+.course-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+.tab{padding:10px 18px;border-radius:var(--r-pill);font-weight:700;font-size:14px;color:var(--ink-2);
+  background:var(--paper);border:1.5px solid var(--line);transition:all .25s}
+.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab:hover:not(.active){border-color:var(--ink-3)}
+.course-grid{display:grid;gap:20px}
+.course{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:24px;display:flex;flex-direction:column;gap:16px;position:relative;
+  border-top:3px solid var(--cobalt);transition:transform .35s var(--ease),box-shadow .35s var(--ease);
+  animation:fadeUp .5s var(--ease) both;
+}
+.course:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.course-top{display:flex;align-items:center;justify-content:space-between}
+.tag{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--cobalt);
+  background:var(--cobalt-tint);padding:6px 11px;border-radius:8px}
+.rating{display:flex;align-items:center;gap:5px;font-weight:800;font-size:14px}
+.rating .stars{font-size:13px}
+.course h3{font-family:'Plus Jakarta Sans';font-weight:800;font-size:22px;letter-spacing:-.02em;line-height:1.18}
+.course-faculty{display:flex;align-items:center;gap:11px}
+.course-faculty .fa{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;flex-shrink:0}
+.course-faculty .fn{font-size:14px;font-weight:700}
+.course-faculty .fr{font-size:12.5px;color:var(--ink-3)}
+.course-meta{display:flex;gap:18px;padding-top:4px;border-top:1px solid var(--line);flex-wrap:wrap}
+.course-meta div{font-size:12.5px;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:6px}
+.course-meta b{color:var(--ink);font-weight:800}
+.course-foot{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
+.price{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:-.01em}
+.price s{font-family:'Plus Jakarta Sans';font-size:14px;color:var(--ink-3);font-weight:600;margin-left:6px}
+
+/* ============ TESTIMONIALS ============ */
+.testi{overflow:hidden}
+.testi-stage{position:relative}
+.testi-track{display:flex;transition:transform .55s var(--ease)}
+.testi-slide{flex:0 0 100%;padding:4px;display:flex;justify-content:center}
+.quote{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r-xl);
+  padding:56px 40px;position:relative;width:100%;max-width:600px;
+  min-height:400px;display:flex;flex-direction:column;justify-content:center;
+}
+.qmark{font-family:'DM Serif Display',serif;font-size:120px;line-height:.5;color:var(--cobalt-tint-2);
+  position:absolute;top:42px;left:26px;z-index:0;pointer-events:none}
+.quote p{font-family:'DM Serif Display',serif;font-size:clamp(22px,5.5vw,30px);line-height:1.28;
+  position:relative;z-index:1;letter-spacing:-.01em}
+.quote-who{display:flex;align-items:center;gap:14px;margin-top:26px;position:relative;z-index:1}
+.quote-who .qa{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:17px;flex-shrink:0}
+.quote-who .qn{font-weight:800;font-size:16px}
+.quote-who .qr{font-size:13px;color:var(--cobalt);font-weight:700}
+.testi-nav{display:flex;align-items:center;justify-content:space-between;margin-top:24px}
+.dots{display:flex;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line-2);transition:all .3s;cursor:pointer;border:none;padding:0}
+.dot.active{background:var(--cobalt);width:26px;border-radius:5px}
+.arrows{display:flex;gap:10px}
+.arr{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--line-2);background:var(--paper);
+  display:grid;place-items:center;transition:all .25s;color:var(--ink)}
+.arr:hover{border-color:var(--ink);transform:translateY(-2px)}
+
+/* ============ BLOG ============ */
+.blog-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:var(--sp-7)}
+.blog-grid{display:grid;gap:22px}
+.post{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;display:flex;flex-direction:column;position:relative;
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease);
+}
+.post::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--cobalt);
+  transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);z-index:3}
+.post:hover{transform:translateY(-7px);box-shadow:var(--shadow)}
+.post:hover::before{transform:scaleX(1)}
+.post-img{height:158px;position:relative;overflow:hidden;display:grid;place-items:center}
+.post-img .ph{position:absolute;inset:0;opacity:.9}
+.post-img .pn{position:relative;font-family:'DM Serif Display',serif;font-size:46px;color:rgba(255,255,255,.92);z-index:1}
+.post-cat{position:absolute;top:14px;left:14px;z-index:2;font-size:11px;font-weight:800;letter-spacing:.03em;
+  text-transform:uppercase;color:#fff;background:rgba(22,21,15,.55);backdrop-filter:blur(6px);padding:6px 11px;border-radius:8px}
+.post-body{padding:22px;display:flex;flex-direction:column;flex:1}
+.post-body h3{font-family:'Plus Jakarta Sans';font-weight:800;font-size:19px;line-height:1.25;letter-spacing:-.02em}
+.post-ex{font-size:14px;color:var(--ink-2);margin-top:10px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-foot{display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.post-ava{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0}
+.post-auth{font-size:12.5px;font-weight:700;line-height:1.2}
+.post-read{font-size:11.5px;color:var(--ink-3)}
+.post-more{margin-left:auto;font-size:13px;font-weight:800;color:var(--cobalt);display:inline-flex;align-items:center;gap:5px;transition:gap .25s}
+.post:hover .post-more{gap:9px}
+.blog-allwrap{display:flex;justify-content:center;margin-top:var(--sp-7)}
+
+/* ============ CTA BANNER ============ */
+.cta-banner{padding:var(--sp-8) 0}
+.cta-box{
+  background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:var(--r-xl);
+  padding:clamp(36px,7vw,68px) clamp(26px,6vw,64px);position:relative;overflow:hidden;text-align:center;
+  box-shadow:var(--shadow);
+}
+.cta-box .glow{position:absolute;width:460px;height:460px;border-radius:50%;
+  background:radial-gradient(circle,rgba(44,75,255,.16),transparent 62%);top:-200px;right:-150px;pointer-events:none}
+.cta-box .glow.g2{right:auto;left:-170px;top:auto;bottom:-230px;background:radial-gradient(circle,rgba(44,75,255,.10),transparent 62%)}
+.cta-box h2{font-size:clamp(34px,8vw,56px);position:relative;z-index:1;color:var(--ink)}
+.cta-box h2 em{font-style:italic;color:var(--cobalt)}
+.cta-box p{position:relative;z-index:1;color:var(--ink-2);font-size:16px;margin-top:14px;max-width:44ch;margin-inline:auto}
+.cta-form{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;max-width:520px;margin:30px auto 0}
+.cta-fields{display:flex;gap:10px;flex-wrap:wrap}
+.cta-form input{
+  flex:1;min-width:160px;background:var(--ivory);border:1.5px solid var(--line-2);
+  border-radius:var(--r-pill);padding:15px 22px;color:var(--ink);font-family:inherit;font-size:15px;font-weight:500;transition:border-color .2s,background .2s;
+}
+.cta-form input::placeholder{color:var(--ink-3)}
+.cta-form input:focus{outline:none;border-color:var(--cobalt);background:var(--paper)}
+.cta-form input.err{border-color:#e0533a;animation:shake .4s}
+.cta-form .btn{width:100%}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.cta-note{position:relative;z-index:1;font-size:13px;color:var(--ink-3);margin-top:16px;min-height:18px;transition:color .2s}
+.cta-note.ok{color:#1F8A5B}
+
+/* ============ FOOTER ============ */
+.footer{padding:var(--sp-8) 0 var(--sp-6);border-top:1px solid var(--line)}
+.foot-grid{display:grid;gap:38px}
+.foot-brand .logo{font-size:26px}
+.foot-brand p{font-size:14px;color:var(--ink-3);margin-top:14px;max-width:30ch;line-height:1.6}
+.foot-social{display:flex;gap:10px;margin-top:20px}
+.foot-social a{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line-2);
+  display:grid;place-items:center;color:var(--ink-2);transition:all .25s;font-weight:700;font-size:13px}
+.foot-social a:hover{background:var(--cobalt);color:#fff;border-color:var(--cobalt);transform:translateY(-2px)}
+.foot-social a svg{width:17px;height:17px;display:block}
+.foot-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.foot-col h5{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
+.foot-col a{display:block;font-size:14.5px;font-weight:600;color:var(--ink-2);padding:6px 0;transition:color .2s}
+.foot-col a:hover{color:var(--cobalt)}
+.foot-bot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  margin-top:var(--sp-7);padding-top:var(--sp-5);border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+.foot-bot a{color:var(--ink-3);font-weight:600}
+.foot-bot a:hover{color:var(--ink)}
+
+/* ============ REVEAL ============ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.hero .anim{opacity:0;animation:fadeUp .8s var(--ease) forwards}
+.hero .d1{animation-delay:.05s}.hero .d2{animation-delay:.18s}.hero .d3{animation-delay:.31s}
+.hero .d4{animation-delay:.44s}.hero .d5{animation-delay:.57s}.hero .d6{animation-delay:.3s}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}.hero .anim{opacity:1}
+}
+
+/* ============ RESPONSIVE ============ */
+@media(min-width:768px){
+  .wrap{padding:0 40px}
+  .chips{padding-left:40px;padding-right:40px;margin:0 -40px}
+  .hero-grid{grid-template-columns:1.05fr .95fr}
+  .feat-grid{grid-template-columns:repeat(3,1fr)}
+  .course-grid{grid-template-columns:repeat(2,1fr)}
+  .blog-grid{grid-template-columns:repeat(3,1fr)}
+  .foot-grid{grid-template-columns:1.4fr 1fr;align-items:start}
+  .foot-cols{grid-template-columns:repeat(3,1fr)}
+  .nav-links{display:flex}
+  .nav-login{display:inline}
+  .sec-pad{padding:var(--sp-10) 0}
+}
+@media(min-width:1024px){
+  .hero h1{font-size:74px}
+  .hero-sub{font-size:19px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo">xt<b>opr</b><span class="dot"></span></a>
+    <div class="nav-links">
+      <a href="#courses">Courses</a>
+      <a href="#why">Why xtopr</a>
+      <a href="#toppers">Toppers</a>
+      <a href="#blog">Study Desk</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="nav-login">Log in</a>
+      <a href="#start" class="btn btn-primary btn-sm">Register</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="badge anim d1"><span class="pip"></span> Trusted by 10,000+ rankers across India</span>
+        <h1 class="anim d2">From aspirant<br />to <em>topper.</em></h1>
+        <p class="hero-sub anim d3">One focused platform for NEET, JEE, CA &amp; Commerce — live classes, India's sharpest faculty, and a study plan that actually moves your rank.</p>
+        <div class="hero-cta anim d4">
+          <a href="#start" class="btn btn-primary">Get Started Free <span class="btn-arrow">→</span></a>
+          <a href="#courses" class="btn btn-ghost">Explore Courses</a>
+        </div>
+        <div class="hero-trust anim d5">
+          <div class="avatars">
+            <span style="background:#2C4BFF">A</span>
+            <span style="background:#E8743B">R</span>
+            <span style="background:#1F8A5B">P</span>
+            <span style="background:#9B4DE0">S</span>
+          </div>
+          <div class="hero-trust-txt">
+            <div class="stars">★★★★★ <b style="color:var(--ink)">4.9</b></div>
+            <span>from <b>12,400+</b> student reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- phone mockup -->
+      <div class="hero-visual">
+        <div class="float float-1 anim d6">
+          <div class="fic" style="background:var(--cobalt-tint)"><b style="color:var(--cobalt);font-size:16px">↑</b></div>
+          <div><div class="fk">Avg. rank jump</div><div class="fv">+38,000</div></div>
+        </div>
+        <div class="phone anim d4">
+          <div class="notch"></div>
+          <div class="phone-screen">
+            <div class="app">
+              <div class="app-top">
+                <div><div class="app-hi">Good evening,</div><div class="app-name">Ananya 👋</div></div>
+                <div class="app-ava">A</div>
+              </div>
+              <div class="app-card">
+                <div class="ring"></div>
+                <div class="k">NEET 2026 · Day 142</div>
+                <h4>Today's goal</h4>
+                <p>3 of 4 targets complete</p>
+              </div>
+              <div class="app-sec-t">Up next <span>See all</span></div>
+              <div class="app-row">
+                <div class="ic"><b>Ph</b></div>
+                <div><div class="t1">Rotational Motion</div><div class="t2">Live · Dr. Mehta</div></div>
+                <div class="live"><i></i> LIVE</div>
+              </div>
+              <div class="app-row">
+                <div class="ic"><b>Bi</b></div>
+                <div><div class="t1">Human Physiology</div><div class="t2">Recorded · 48 min</div></div>
+              </div>
+              <div class="app-row">
+                <div class="ic"><b>Ch</b></div>
+                <div><div class="t1">Mock Test #14</div><div class="t2">Due today · 180 Q</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="float float-2 anim d5">
+          <div class="fic" style="background:#E9F6EF"><b style="color:#1F8A5B;font-size:14px">✓</b></div>
+          <div><div class="fk">Concepts mastered</div><div class="fv">214 / 260</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ EXAM STRIP ============ -->
+<section class="strip">
+  <div class="wrap reveal">
+    <div class="strip-head">
+      <span class="eyebrow">Pick your exam</span>
+      <p>Swipe to explore →</p>
+    </div>
+  </div>
+  <div class="wrap reveal">
+    <div class="chips" id="chips">
+      <a href="#courses" class="chip">NEET <span class="n">2.1k batches</span></a>
+      <a href="#courses" class="chip">JEE Main <span class="n">1.8k</span></a>
+      <a href="#courses" class="chip">JEE Advanced <span class="n">940</span></a>
+      <a href="#courses" class="chip">CA Foundation <span class="n">760</span></a>
+      <a href="#courses" class="chip">UPSC CSE <span class="n">1.2k</span></a>
+      <a href="#courses" class="chip">Class 10 Boards <span class="n">3.4k</span></a>
+      <a href="#courses" class="chip">Commerce XI–XII <span class="n">1.1k</span></a>
+      <a href="#courses" class="chip">CUET <span class="n">680</span></a>
+      <a href="#courses" class="chip">CLAT <span class="n">410</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="sec-pad" id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Why xtopr</span>
+      <h2>Built for rank, not for noise.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <div class="feat-ic">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2C4BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="feat-stat">10,000<span class="u">+</span></div>
+        <h3>Aspirants, one mission</h3>
+        <p>A focused community of serious rankers — peer doubt-solving, study streaks, and weekly leaderboards that keep you accountable.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ic">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2C4BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="feat-stat">150<span class="u">+</span></div>
+        <h3>Expert faculty &amp; AIR mentors</h3>
+        <p>Learn from educators behind 800+ top-100 ranks — IITians, doctors and CAs who teach the why, not just the formula.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ic">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2C4BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="m10 8 4 2.5L10 13z" fill="#2C4BFF"/></svg>
+        </div>
+        <div class="feat-stat">Live<span class="u"> + </span><span style="font-size:30px">recorded</span></div>
+        <h3>Never miss a concept</h3>
+        <p>Attend live, or replay every class with timestamps, notes and instant doubt threads. Your full syllabus, always on demand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COURSES ============ -->
+<section class="courses sec-pad" id="courses">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Featured courses</span>
+      <h2>Programs designed to get you ranked.</h2>
+    </div>
+    <div class="course-tabs reveal" id="tabs">
+      <button class="tab active" data-exam="neet">NEET</button>
+      <button class="tab" data-exam="jee">JEE</button>
+      <button class="tab" data-exam="commerce">Commerce &amp; CA</button>
+    </div>
+    <div class="course-grid" id="courseGrid"></div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="sec-pad testi" id="toppers">
+  <div class="wrap" data-comment-anchor="7da82567cf-div">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Topper stories</span>
+      <h2>Ranks that started right here.</h2>
+    </div>
+    <div class="testi-stage reveal">
+      <div class="testi-track" id="track"></div>
+      <div class="testi-nav">
+        <div class="dots" id="dots"></div>
+        <div class="arrows">
+          <button class="arr" id="prev" aria-label="Previous">←</button>
+          <button class="arr" id="next" aria-label="Next">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOG ============ -->
+<section class="sec-pad" id="blog" style="background:var(--ivory-2)">
+  <div class="wrap">
+    <div class="blog-head reveal">
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="eyebrow">From the Study Desk</span>
+        <h2>xtopr Reads</h2>
+      </div>
+      <p class="lead" style="max-width:32ch">Strategy, syllabus shortcuts and mindset notes — written by mentors who've cracked the exam you're sitting.</p>
+    </div>
+    <div class="blog-grid" id="blogGrid"></div>
+    <div class="blog-allwrap reveal">
+      <a href="#" class="btn btn-ghost">View All Articles <span class="btn-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="cta-banner" id="start">
+  <div class="wrap reveal">
+    <div class="cta-box" data-comment-anchor="ce6b151bfe-div">
+      <div class="glow"></div>
+      <div class="glow g2"></div>
+      <h2>Your rank is <em>waiting.</em></h2>
+      <p>Join free today. Get a personalised study plan, one live class on us, and your first mock test — no card required.</p>
+      <form class="cta-form" id="ctaForm" novalidate>
+        <div class="cta-fields">
+          <input type="text" id="cname" placeholder="Your name" aria-label="Your name" autocomplete="name" />
+          <input type="email" id="email" placeholder="Email address" aria-label="Email address" autocomplete="email" />
+        </div>
+        <button type="submit" class="btn btn-primary">Join xtopr <span class="btn-arrow">→</span></button>
+      </form>
+      <div class="cta-note" id="note">Free forever for your first course. Cancel anytime.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid" data-comment-anchor="6544b2eb57-div">
+      <div class="foot-brand">
+        <a href="#top" class="logo">xt<b>opr</b><span class="dot"></span></a>
+        <p>The premium study companion for India's next generation of toppers.</p>
+        <div class="foot-social">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd"><path d="M21.6 7.2c.3 1.1.4 3.4.4 4.8s-.1 3.7-.4 4.8a2.5 2.5 0 0 1-1.8 1.8c-1.6.4-7.8.4-7.8.4s-6.2 0-7.8-.4a2.5 2.5 0 0 1-1.8-1.8C2.1 15.7 2 13.4 2 12s.1-3.7.4-4.8a2.5 2.5 0 0 1 1.8-1.8C5.8 5 12 5 12 5s6.2 0 7.8.4a2.5 2.5 0 0 1 1.8 1.8zM10 15l5-3-5-3z"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23 22h-6.6l-5.2-6.8L5.3 22H2l7.8-8.9L1.4 2H8l4.7 6.2L18.9 2zm-2.3 18h1.8L7.5 3.9H5.6L16.6 20z"/></svg></a>
+          <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3l-3.3 15.6c-.25 1.1-.9 1.37-1.83.85l-5.05-3.72-2.44 2.35c-.27.27-.5.5-1.02.5l.36-5.2L17.2 6.5c.4-.36-.09-.56-.62-.2L6.9 12.6 1.95 11.05c-1.07-.34-1.1-1.08.23-1.6L20.5 2.72c.9-.33 1.69.2 1.4 1.58z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h5>Company</h5>
+          <a href="pages/about.html">About</a><a href="pages/careers.html">Careers</a><a href="pages/faculty.html">Faculty</a><a href="pages/contact.html">Contact</a>
+        </div>
+        <div class="foot-col">
+          <h5>Learn</h5>
+          <a href="#courses">Courses</a><a href="pages/free-resources.html">Free resources</a><a href="#blog">Blog</a><a href="pages/mock-tests.html">Mock tests</a>
+        </div>
+        <div class="foot-col">
+          <h5>Support</h5>
+          <a href="pages/help.html">Help center</a><a href="pages/privacy.html">Privacy</a><a href="pages/terms.html">Terms</a><a href="pages/refunds.html">Refunds</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 xtopr Learning Pvt. Ltd. Made in India.</span>
+      <span><a href="pages/privacy.html">Privacy</a> · <a href="pages/terms.html">Terms</a> · <a href="pages/contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== nav blur on scroll ===== */
+const nav=document.getElementById('nav');
+const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>16);
+onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+/* ===== scroll reveal ===== */
+const io=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach((el,i)=>{
+  el.style.transitionDelay=(i%3)*0.07+'s';
+  io.observe(el);
+});
+
+/* ===== course data + tabs ===== */
+const COURSES={
+  neet:[
+    {tag:'NEET · Biology',title:'NEET 2027 Dropper Batch — Sankalp',fa:'DM',fac:'Dr. Divya Mehta',facrole:'AIIMS · 11 yrs teaching',color:'#1F8A5B',rating:'4.9',meta:[['Duration','11 months'],['Live classes','620+'],['Mock tests','40']],price:'₹24,999',was:'₹38,000'},
+    {tag:'NEET · Full Course',title:'Class 12 + NEET Integrated — Pinnacle',fa:'RK',fac:'Rohan Kulkarni',facrole:'AIR 84 · Physics',color:'#2C4BFF',rating:'4.8',meta:[['Duration','2 years'],['Live classes','1100+'],['Mock tests','75']],price:'₹42,500',was:'₹60,000'}
+  ],
+  jee:[
+    {tag:'JEE · Advanced',title:'JEE Advanced Crash — Vajra',fa:'AS',fac:'Arjun Sharma',facrole:'IIT Bombay · Maths',color:'#E8743B',rating:'4.9',meta:[['Duration','7 months'],['Live classes','480+'],['Mock tests','52']],price:'₹29,999',was:'₹45,000'},
+    {tag:'JEE · Main',title:'JEE Main 2027 Foundation — Aarambh',fa:'NP',fac:'Neha Patil',facrole:'IIT Delhi · Chemistry',color:'#9B4DE0',rating:'4.8',meta:[['Duration','14 months'],['Live classes','840+'],['Mock tests','60']],price:'₹34,999',was:'₹52,000'}
+  ],
+  commerce:[
+    {tag:'CA · Foundation',title:'CA Foundation Complete — Ledger Pro',fa:'VG',fac:'CA Vikram Goyal',facrole:'Rank holder · 9 yrs',color:'#2C4BFF',rating:'4.9',meta:[['Duration','8 months'],['Live classes','360+'],['Mock tests','30']],price:'₹19,999',was:'₹30,000'},
+    {tag:'Commerce · XI–XII',title:'Commerce Stream Mastery — Summit',fa:'SR',fac:'Sneha Rao',facrole:'Accountancy · 12 yrs',color:'#1F8A5B',rating:'4.8',meta:[['Duration','2 years'],['Live classes','700+'],['Mock tests','48']],price:'₹22,500',was:'₹33,000'}
+  ]
+};
+const grid=document.getElementById('courseGrid');
+function renderCourses(exam){
+  grid.innerHTML='';
+  COURSES[exam].forEach((c,i)=>{
+    const el=document.createElement('div');
+    el.className='course';
+    el.style.animationDelay=(i*0.09)+'s';
+    el.innerHTML=`
+      <div class="course-top">
+        <span class="tag">${c.tag}</span>
+        <span class="rating"><span class="stars">★</span> ${c.rating}</span>
+      </div>
+      <h3>${c.title}</h3>
+      <div class="course-faculty">
+        <div class="fa" style="background:${c.color}">${c.fa}</div>
+        <div><div class="fn">${c.fac}</div><div class="fr">${c.facrole}</div></div>
+      </div>
+      <div class="course-meta">
+        ${c.meta.map(m=>`<div>${m[0]}: <b>${m[1]}</b></div>`).join('')}
+      </div>
+      <div class="course-foot">
+        <div class="price">${c.price}<s>${c.was}</s></div>
+        <a href="#start" class="btn btn-primary btn-sm">Enroll <span class="btn-arrow">→</span></a>
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+renderCourses('neet');
+document.getElementById('tabs').addEventListener('click',e=>{
+  const b=e.target.closest('.tab');if(!b)return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  b.classList.add('active');
+  renderCourses(b.dataset.exam);
+});
+
+/* ===== testimonials ===== */
+const TESTI=[
+  {q:'I switched to xtopr in my dropper year with almost no confidence. The daily targets and live doubt classes rebuilt my routine — and my rank.',n:'Aditya Verma',r:'AIR 312 · NEET 2025',c:'#1F8A5B',a:'A'},
+  {q:'The recorded backups saved me. Whenever I missed a live JEE class, the timestamped notes meant I never fell behind for a single topic.',n:'Ishita Nair',r:'AIR 740 · JEE Advanced',c:'#2C4BFF',a:'I'},
+  {q:'Coming from a small town, I never had access to faculty like this. xtopr made CA Foundation feel genuinely doable on the first attempt.',n:'Karan Bansal',r:'All-India 1st attempt · CA',c:'#E8743B',a:'K'},
+  {q:'The weekly leaderboard turned studying into something I actually looked forward to. I went from the middle of my class to a state topper.',n:'Meera Joshi',r:'State Rank 4 · Class 12',c:'#9B4DE0',a:'M'}
+];
+const track=document.getElementById('track');
+const dotsWrap=document.getElementById('dots');
+let idx=0,timer;
+TESTI.forEach((t,i)=>{
+  const s=document.createElement('div');s.className='testi-slide';
+  s.innerHTML=`<div class="quote"><div class="qmark">”</div>
+    <p>${t.q}</p>
+    <div class="quote-who"><div class="qa" style="background:${t.c}">${t.a}</div>
+    <div><div class="qn">${t.n}</div><div class="qr">${t.r}</div></div></div></div>`;
+  track.appendChild(s);
+  const d=document.createElement('button');d.className='dot'+(i===0?' active':'');
+  d.addEventListener('click',()=>go(i,true));dotsWrap.appendChild(d);
+});
+function go(n,manual){
+  idx=(n+TESTI.length)%TESTI.length;
+  track.style.transform=`translateX(-${idx*100}%)`;
+  dotsWrap.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  if(manual)restart();
+}
+function restart(){clearInterval(timer);timer=setInterval(()=>go(idx+1),5500);}
+document.getElementById('next').addEventListener('click',()=>go(idx+1,true));
+document.getElementById('prev').addEventListener('click',()=>go(idx-1,true));
+restart();
+
+/* ===== blog ===== */
+const POSTS=[
+  {cat:'NEET Tips',c1:'#1F8A5B',c2:'#34B37D',n:'N',t:'How to crack NEET in 6 months with zero coaching',ex:'A week-by-week revision map that prioritises NCERT, high-yield chapters and daily 90-minute mock blocks.',au:'Dr. Divya Mehta',ava:'D',ac:'#1F8A5B',read:'6 min read'},
+  {cat:'JEE Strategy',c1:'#2C4BFF',c2:'#5B73FF',n:'J',t:'The 3-test rhythm that fixes silly mistakes in JEE',ex:'Why your problem isn\'t the syllabus — it\'s pattern fatigue. Build an error log that actually compounds.',au:'Arjun Sharma',ava:'A',ac:'#2C4BFF',read:'5 min read'},
+  {cat:'Career',c1:'#E8743B',c2:'#F09A6E',n:'C',t:'CA, B.Com or BBA? Choosing after Class 12 Commerce',ex:'An honest breakdown of effort, timelines and earning curves so you pick a path you won\'t regret in year three.',au:'CA Vikram Goyal',ava:'V',ac:'#E8743B',read:'7 min read'}
+];
+const blogGrid=document.getElementById('blogGrid');
+POSTS.forEach(p=>{
+  const el=document.createElement('article');el.className='post reveal';
+  el.innerHTML=`
+    <div class="post-img" style="background:${p.c1}">
+      <div class="ph" style="background:linear-gradient(135deg,${p.c1},${p.c2})"></div>
+      <span class="post-cat">${p.cat}</span>
+      <span class="pn">${p.n}</span>
+    </div>
+    <div class="post-body">
+      <h3>${p.t}</h3>
+      <p class="post-ex">${p.ex}</p>
+      <div class="post-foot">
+        <div class="post-ava" style="background:${p.ac}">${p.ava}</div>
+        <div><div class="post-auth">${p.au}</div><div class="post-read">${p.read}</div></div>
+        <a href="#" class="post-more">Read More →</a>
+      </div>
+    </div>`;
+  blogGrid.appendChild(el);
+  io.observe(el);
+});
+
+/* ===== email validation ===== */
+const form=document.getElementById('ctaForm');
+const email=document.getElementById('email');
+const note=document.getElementById('note');
+const cname=document.getElementById('cname');
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=cname.value.trim();
+  const v=email.value.trim();
+  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  note.classList.remove('ok');
+  if(!name){
+    cname.classList.add('err');
+    note.textContent='Add your name so we can personalise your study plan.';
+    return;
+  }
+  if(!ok){
+    email.classList.add('err');
+    note.textContent='Please enter a valid email so we can save your spot.';
+    return;
+  }
+  cname.classList.remove('err');email.classList.remove('err');
+  note.classList.add('ok');
+  const first=name.split(' ')[0];
+  note.textContent='🎉 You\'re in, '+first+'! Check '+v+' to set your exam & build your plan.';
+  cname.value='';email.value='';
+});
+cname.addEventListener('input',()=>cname.classList.remove('err'));
+email.addEventListener('input',()=>email.classList.remove('err'));
+</script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+#courseGrid >div:nth-child(1) { border-width: 2px 1px 1px !important }
+#courseGrid >div:nth-child(1) { border-width: 3px 1px 1px !important }
+#courseGrid >div:nth-child(2) { border-width: 0px 1px 1px !important }
+</style>

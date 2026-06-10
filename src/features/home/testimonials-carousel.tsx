@@ -1,6 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+
+import type { ResolvedImage } from "@/utils/media";
 
 /** Plain testimonial card data prepared on the server. */
 export interface QuoteCard {
@@ -10,6 +13,7 @@ export interface QuoteCard {
   context?: string | null;
   initial: string;
   accent: string;
+  photo?: ResolvedImage | null;
 }
 
 const AUTOPLAY_MS = 5500;
@@ -94,12 +98,22 @@ export function TestimonialsCarousel({
                     {q.quote}
                   </blockquote>
                   <figcaption className="relative z-[1] mt-6 flex items-center gap-3.5">
-                    <span
-                      className="grid h-[50px] w-[50px] flex-none place-items-center rounded-full text-[17px] font-bold text-primary-foreground"
-                      style={{ background: q.accent }}
-                    >
-                      {q.initial}
-                    </span>
+                    {q.photo ? (
+                      <Image
+                        src={q.photo.url}
+                        alt={q.photo.alt}
+                        width={50}
+                        height={50}
+                        className="h-[50px] w-[50px] flex-none rounded-full object-cover"
+                      />
+                    ) : (
+                      <span
+                        className="grid h-[50px] w-[50px] flex-none place-items-center rounded-full text-[17px] font-bold text-primary-foreground"
+                        style={{ background: q.accent }}
+                      >
+                        {q.initial}
+                      </span>
+                    )}
                     <div>
                       <div className="text-base font-extrabold text-foreground">{q.name}</div>
                       {q.context ? (

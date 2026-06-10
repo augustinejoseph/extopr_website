@@ -1,5 +1,6 @@
 import { getTestimonials } from "@/lib/cms/queries";
 import { getTranslator } from "@/lib/i18n/messages";
+import { resolveImage } from "@/utils/media";
 
 import { SectionHead } from "./section-head";
 import { type QuoteCard,TestimonialsCarousel } from "./testimonials-carousel";
@@ -22,6 +23,7 @@ export async function Testimonials() {
     context: item.course ?? null,
     initial: item.studentName.trim()[0]?.toUpperCase() ?? "·",
     accent: ACCENTS[i % ACCENTS.length],
+    photo: resolveImage(item.photo, item.studentName),
   }));
 
   return (

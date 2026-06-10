@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 import { ButtonArrow,buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
+
+import type { ResolvedImage } from "@/utils/media";
 
 /** Plain, serializable course card shape prepared on the server (no Payload relations). */
 export interface CourseCard {
@@ -15,6 +18,7 @@ export interface CourseCard {
   facultyRole?: string | null;
   facultyAccent?: string | null;
   facultyInitials?: string | null;
+  facultyPhoto?: ResolvedImage | null;
   meta: { label: string; value: string }[];
   priceLabel?: string | null;
   wasLabel?: string | null;
@@ -91,12 +95,22 @@ export function CoursesGrid({ tabs, enrollLabel }: { tabs: CourseTab[]; enrollLa
 
             {c.facultyName ? (
               <div className="flex items-center gap-[11px]">
-                <span
-                  className="grid h-[42px] w-[42px] flex-none place-items-center rounded-full text-[15px] font-bold text-primary-foreground"
-                  style={{ background: c.facultyAccent || "var(--primary)" }}
-                >
-                  {c.facultyInitials}
-                </span>
+                {c.facultyPhoto ? (
+                  <Image
+                    src={c.facultyPhoto.url}
+                    alt={c.facultyPhoto.alt}
+                    width={42}
+                    height={42}
+                    className="h-[42px] w-[42px] flex-none rounded-full object-cover"
+                  />
+                ) : (
+                  <span
+                    className="grid h-[42px] w-[42px] flex-none place-items-center rounded-full text-[15px] font-bold text-primary-foreground"
+                    style={{ background: c.facultyAccent || "var(--primary)" }}
+                  >
+                    {c.facultyInitials}
+                  </span>
+                )}
                 <div>
                   <div className="text-sm font-bold text-foreground">{c.facultyName}</div>
                   {c.facultyRole ? (

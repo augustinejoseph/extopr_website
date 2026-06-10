@@ -1,5 +1,6 @@
 import { getCourseLandings } from "@/lib/cms/queries";
 import { getTranslator } from "@/lib/i18n/messages";
+import { resolveImage } from "@/utils/media";
 
 import { type CourseCard, CoursesGrid, type CourseTab } from "./courses-grid";
 import { SectionHead } from "./section-head";
@@ -51,6 +52,7 @@ export async function Courses() {
       facultyRole: faculty ? [faculty.role, faculty.credential].filter(Boolean).join(" · ") : null,
       facultyAccent: faculty?.accentColor ?? null,
       facultyInitials: faculty ? initials(faculty.name) : null,
+      facultyPhoto: faculty ? resolveImage(faculty.photo, faculty.name) : null,
       meta: (doc.meta ?? []).map((m) => ({ label: m.label, value: m.value })),
       priceLabel: doc.priceLabel ?? null,
       wasLabel: doc.wasLabel ?? null,

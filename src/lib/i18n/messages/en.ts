@@ -63,8 +63,6 @@ export const en = {
   "social.youtube": "YouTube",
   "social.x": "X",
   "social.telegram": "Telegram",
-
-  "localeSwitcher.label": "Language",
 } as const;
 
 export type MessageKey = keyof typeof en;

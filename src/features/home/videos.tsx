@@ -1,6 +1,5 @@
 import { JsonLd } from "@/components/seo/json-ld";
 import { getVideos } from "@/lib/cms/queries";
-import { type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
 import { videoObjectJsonLd } from "@/lib/seo/json-ld";
 import { resolveImage } from "@/utils/media";
@@ -11,8 +10,8 @@ import { VideoFacade } from "./video-facade";
  * YouTube videos section. Server Component that fetches ordered videos, emits VideoObject JSON-LD
  * per video for SEO, and renders the lite facade (iframe loads on click). Renders nothing if empty.
  */
-export async function Videos({ locale }: { locale: Locale }) {
-  const [videos, t] = [await getVideos(locale), getTranslator(locale)];
+export async function Videos() {
+  const [videos, t] = [await getVideos(), getTranslator()];
   if (videos.length === 0) return null;
 
   return (

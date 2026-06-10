@@ -1,11 +1,10 @@
 import { env } from "@/config/env";
-import { type Locale,locales } from "@/lib/i18n/config";
 import { absoluteUrl } from "@/utils/urls";
 
 import type { Media } from "@cms/payload-types";
 import type { Metadata } from "next";
 
-/** Shape accepted from a Payload `seo` group (all optional, localized values already resolved). */
+/** Shape accepted from a Payload `seo` group (all optional). */
 export interface SeoInput {
   title?: string | null;
   description?: string | null;
@@ -18,44 +17,36 @@ interface BuildMetadataArgs {
   seo: SeoInput | undefined;
   // Fallback title when seo.title is empty (e.g. the page/post title).
   fallbackTitle: string;
-  // Path without locale prefix, e.g. "/" or "/about".
+  // Public path, e.g. "/" or "/about".
   path: string;
-  locale: Locale;
 }
 
 /**
- * Build Next.js Metadata from a Payload SEO group for a given locale.
+ * Build Next.js Metadata from a Payload SEO group.
  *
- * Why: every page must expose per-locale title/description, a canonical URL, OpenGraph/Twitter
- * cards, and hreflang alternates across all locales (SEO rules). Centralizing this guarantees
- * consistency and a single place to evolve metadata. Alternates are derived from the locale config
- * so adding a language needs no change here.
+ * Why: every page must expose a title/description, a canonical URL, and OpenGraph/Twitter cards
+ * (SEO rules). The site is English-only, so there are no hreflang alternates. Centralizing this
+ * guarantees consistency and a single place to evolve metadata.
  */
-export function buildMetadata({ seo, fallbackTitle, path, locale }: BuildMetadataArgs): Metadata {
+export function buildMetadata({ seo, fallbackTitle, path }: BuildMetadataArgs): Metadata {
   const siteUrl = env.NEXT_PUBLIC_SITE_URL;
   const title = seo?.title?.trim() || fallbackTitle;
   const description = seo?.description?.trim() || undefined;
-  const canonical = seo?.canonicalUrl?.trim() || absoluteUrl(path, locale, siteUrl);
+  const canonical = seo?.canonicalUrl?.trim() || absoluteUrl(path, siteUrl);
   const ogImageUrl = resolveImageUrl(seo?.ogImage, siteUrl);
-
-  // hreflang alternates: one entry per supported locale for this same path.
-  const languages = Object.fromEntries(
-    locales.map((l) => [l, absoluteUrl(path, l, siteUrl)]),
-  );
 
   return {
     title,
     description,
     alternates: {
       canonical,
-      languages,
     },
     robots: seo?.noindex ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: {
       title,
       description,
       url: canonical,
-      locale,
+      locale: "en",
       type: "website",
       images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
     },

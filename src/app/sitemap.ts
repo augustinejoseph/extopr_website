@@ -1,6 +1,5 @@
 import { env } from "@/config/env";
 import { getCmsClient } from "@/lib/cms/client";
-import { locales } from "@/lib/i18n/config";
 import { absoluteUrl } from "@/utils/urls";
 
 import type { MetadataRoute } from "next";
@@ -8,10 +7,9 @@ import type { MetadataRoute } from "next";
 /**
  * Dynamic sitemap generated from Payload content.
  *
- * Why: SEO rules forbid hand-maintained sitemaps and require every locale to be listed with
- * hreflang alternates. We enumerate static marketing routes plus published, non-noindex pages and
- * posts, and emit a per-locale entry with language alternates for each. Excludes soft-deleted and
- * inactive content.
+ * Why: SEO rules forbid hand-maintained sitemaps. We enumerate static marketing routes plus
+ * published, non-noindex pages and posts. Excludes soft-deleted and inactive content. The site is
+ * English-only, so each path is a single entry with no hreflang alternates.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getCmsClient();
@@ -41,14 +39,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const allPaths = [...staticPaths, ...dynamicPaths];
 
-  // One sitemap entry per path, with hreflang alternates across every supported locale.
+  // One sitemap entry per path (the site is English-only, so no hreflang alternates).
   return allPaths.map((path) => ({
-    url: absoluteUrl(path, locales[0], siteUrl),
+    url: absoluteUrl(path, siteUrl),
     lastModified: new Date(),
-    alternates: {
-      languages: Object.fromEntries(
-        locales.map((locale) => [locale, absoluteUrl(path, locale, siteUrl)]),
-      ),
-    },
   }));
 }

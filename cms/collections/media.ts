@@ -4,8 +4,8 @@ import type { CollectionConfig } from "payload";
 
 /**
  * Uploaded media (images for hero slides, testimonials, OG images, etc.).
- * Local file storage now; a Cloudflare R2 adapter is wired in a later phase. `alt` is localized
- * and required so every image satisfies the accessibility rule (meaningful alt per locale).
+ * Local file storage now; a Cloudflare R2 adapter is wired in a later phase. `alt` is required so
+ * every image satisfies the accessibility rule (meaningful alt text).
  */
 export const Media: CollectionConfig = buildCollection({
   slug: "media",
@@ -32,7 +32,6 @@ export const Media: CollectionConfig = buildCollection({
     {
       name: "alt",
       type: "text",
-      localized: true,
       required: true,
       admin: { description: "Meaningful alt text. Use an empty string only for decorative images." },
     },

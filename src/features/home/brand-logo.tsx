@@ -1,18 +1,16 @@
 import Link from "next/link";
 
-import { type Locale } from "@/lib/i18n/config";
 import { cn } from "@/utils/cn";
-import { localePath } from "@/utils/urls";
 
 /**
  * Wordmark used in the header and footer. "extopr" with the trailing "opr" in cobalt plus a small
  * cobalt dot — the design's logo treatment (the mock's "xtopr•"), kept on the real brand name.
- * Links home for the active locale.
+ * Links home.
  */
-export function BrandLogo({ locale, className }: { locale: Locale; className?: string }) {
+export function BrandLogo({ className }: { className?: string }) {
   return (
     <Link
-      href={localePath("/", locale)}
+      href="/"
       aria-label="extopr — home"
       className={cn(
         "inline-flex items-baseline font-sans font-extrabold tracking-[-0.04em] text-foreground",

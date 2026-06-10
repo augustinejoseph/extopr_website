@@ -23,25 +23,12 @@ Redesign adds: `Faculty`, `ExamCategories`, and a `SiteSettings` global (see
 image-only hero banner. **All course/faculty/exam content here is marketing copy — real data is
 LMS-owned.**
 
-## Regional languages (i18n)
-The website serves content in multiple regional languages. Supported locales for now:
-
-| Locale | Language | Role |
-|--------|----------|------|
-| `en`   | English  | **Default + fallback** |
-| `ta`   | Tamil    | Regional |
-| `kn`   | Kannada  | Regional |
-
-Rules:
-- **English (`en`) is the default and the fallback.** If a translation is missing for a
-  field or page in `ta`/`kn`, render the `en` value rather than an empty string.
-- Localize **both** Payload content (per-field translations via Payload's localization)
-  **and** UI strings (Next.js i18n with locale-prefixed routes, e.g. `/ta/...`, `/kn/...`;
-  `en` may be the unprefixed default).
-- SEO is per-locale: each locale gets its own metadata, canonical URL, and `hreflang`
-  alternates linking the locale variants. Include all locales in `sitemap.xml`.
-- New languages are added by extending the supported-locale list — never hard-code a fixed
-  set of two/three in component logic. Drive everything from a single locale config.
+## Language
+The website is **English-only**. There is no Payload localization (each collection is a single
+table — no `*_locales`), no locale-prefixed routes, no locale switcher, and no `hreflang`
+alternates. UI strings live in the single English dictionary at `src/lib/i18n/messages/en.ts`,
+surfaced via the `getTranslator()` helper. (Multi-locale support was removed; re-introducing it
+would mean restoring Payload localization plus locale-prefixed routing.)
 
 ## SEO rules (non-negotiable — SEO is the reason this repo exists)
 - Every page sets metadata via `generateMetadata`, fed from Payload SEO fields.
@@ -60,7 +47,7 @@ Next.js → Vercel. Postgres → Neon. Media → local now, Cloudflare R2 later.
 - Keep real course/learner data out of this repo — catalog content here is marketing copy.
 
 ## Project docs (read before contributing)
-- [rules.md](./rules.md) — hard rules: boundaries, i18n, SEO, accessibility, performance,
+- [rules.md](./rules.md) — hard rules: boundaries, SEO, accessibility, performance,
   testing, code quality.
 - [system-architecture.md](./system-architecture.md) — how the layers and pieces fit.
 - [code_style.md](./code_style.md) — naming, imports, structure, DRY, Don'ts, formatting.

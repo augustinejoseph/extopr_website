@@ -26,7 +26,6 @@ export const CourseLanding: CollectionConfig = buildCollection({
     {
       name: "title",
       type: "text",
-      localized: true,
       required: true,
     },
     {
@@ -51,7 +50,6 @@ export const CourseLanding: CollectionConfig = buildCollection({
     {
       name: "tag",
       type: "text",
-      localized: true,
       admin: { description: "Card eyebrow tag, e.g. 'NEET · Biology'." },
     },
     {
@@ -64,7 +62,6 @@ export const CourseLanding: CollectionConfig = buildCollection({
     {
       name: "teaser",
       type: "textarea",
-      localized: true,
       admin: { description: "Short marketing teaser. Not the real course description." },
     },
     {
@@ -75,7 +72,6 @@ export const CourseLanding: CollectionConfig = buildCollection({
     {
       name: "priceLabel",
       type: "text",
-      localized: true,
       admin: {
         description:
           "Optional marketing display price, e.g. '₹24,999'. NOT authoritative pricing (LMS owns that).",
@@ -84,7 +80,6 @@ export const CourseLanding: CollectionConfig = buildCollection({
     {
       name: "wasLabel",
       type: "text",
-      localized: true,
       admin: { description: "Optional struck-through 'was' price, e.g. '₹38,000'." },
     },
     {
@@ -93,8 +88,8 @@ export const CourseLanding: CollectionConfig = buildCollection({
       labels: { singular: "Meta row", plural: "Meta rows" },
       admin: { description: "Card stats, e.g. Duration / Live classes / Mock tests." },
       fields: [
-        { name: "label", type: "text", localized: true, required: true },
-        { name: "value", type: "text", localized: true, required: true },
+        { name: "label", type: "text", required: true },
+        { name: "value", type: "text", required: true },
       ],
     },
     {

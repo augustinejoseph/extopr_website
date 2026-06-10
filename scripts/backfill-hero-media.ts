@@ -24,25 +24,19 @@ async function makePortrait(color: string): Promise<Buffer> {
 }
 
 async function backfill(payload: Payload): Promise<void> {
-  // 1) Media.name from alt where missing. `alt` is localized and required, so we resolve a
-  //    non-empty alt across locales and write it back for `en` too — some legacy docs only have a
-  //    regional alt, which would otherwise fail `en` validation on update.
+  // 1) Media.name from alt where missing (admin-friendly title).
   const media = await payload.find({
     collection: "media",
     limit: 1000,
     depth: 0,
-    locale: "all",
   });
   let named = 0;
   for (const doc of media.docs) {
     if (doc.name) continue;
-    // With locale "all", alt is an object keyed by locale; pick the first non-empty value.
-    const altByLocale = (doc.alt ?? {}) as unknown as Record<string, string | null | undefined>;
-    const alt = Object.values(altByLocale).find((v) => v && v.trim()) ?? doc.filename ?? "Image";
+    const alt = doc.alt?.trim() || doc.filename || "Image";
     await payload.update({
       collection: "media",
       id: doc.id,
-      locale: "en",
       data: { name: alt, alt },
     });
     named += 1;
@@ -52,7 +46,6 @@ async function backfill(payload: Payload): Promise<void> {
   // 2) Attach a portrait mobileImage to hero slides that lack one.
   const slides = await payload.find({
     collection: "hero-carousel",
-    locale: "en",
     sort: "order",
     limit: 1000,
     depth: 0,
@@ -76,7 +69,6 @@ async function backfill(payload: Payload): Promise<void> {
     await payload.update({
       collection: "hero-carousel",
       id: slide.id,
-      locale: "en",
       data: { mobileImage: mobile.id as number },
     });
     attached += 1;

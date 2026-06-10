@@ -2,9 +2,8 @@ import type { Field } from "payload";
 
 /**
  * Reusable SEO field group, applied only to public/indexable collections (Pages, Posts,
- * CourseLanding). Why: SEO is per-locale and the reason this repo exists; centralizing the group
- * keeps metadata consistent and feeds the buildMetadata helper. Text fields are localized so each
- * locale gets its own title/description, with English fallback handled at render time.
+ * CourseLanding). Why: SEO is the reason this repo exists; centralizing the group keeps metadata
+ * consistent and feeds the buildMetadata helper.
  */
 export function seoField(): Field {
   return {
@@ -15,14 +14,12 @@ export function seoField(): Field {
       {
         name: "title",
         type: "text",
-        localized: true,
-        admin: { description: "Per-locale <title>. Falls back to the page title if empty." },
+        admin: { description: "<title> for this page. Falls back to the page title if empty." },
       },
       {
         name: "description",
         type: "textarea",
-        localized: true,
-        admin: { description: "Meta description for this locale." },
+        admin: { description: "Meta description." },
       },
       {
         name: "canonicalUrl",

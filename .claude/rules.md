@@ -17,12 +17,11 @@ stop and raise it rather than working around it.
   comment.
 - Generate types from Payload collections rather than redeclaring shapes by hand.
 
-## Internationalization
-- Supported locales: `en` (default + fallback), `ta` (Tamil), `kn` (Kannada).
-- **English is always the fallback.** A missing `ta`/`kn` translation renders the `en` value.
-- The supported-locale list lives in **one** config module. Never hard-code locale sets
-  inside components or routes.
-- Every public page exposes per-locale metadata, canonical URLs, and `hreflang` alternates.
+## Language
+- The site is **English-only**: no Payload localization (one table per collection, no
+  `*_locales`), no locale-prefixed routes, no locale switcher, no `hreflang` alternates.
+- UI strings live in the single English dictionary (`src/lib/i18n/messages/en.ts`), surfaced
+  via `getTranslator()`.
 
 ## SEO (the reason this repo exists)
 - Every page sets metadata via `generateMetadata` from Payload SEO fields.
@@ -48,8 +47,8 @@ stop and raise it rather than working around it.
 ## Testing (test after implementing)
 - **Every feature ships with tests.** Implement the feature, then add tests in the same
   change set. A feature is not "done" until it is covered.
-- Test the behavior users rely on: page renders, locale fallback to `en`, SEO metadata
-  presence, and any data-mapping logic in the CMS/LMS access layers.
+- Test the behavior users rely on: page renders, SEO metadata presence, and any data-mapping
+  logic in the CMS/LMS access layers.
 - Use Playwright for critical user flows and component/unit tests for utilities and helpers.
 - A failing or skipped test is a blocker. Do not merge around it; fix it or remove the cause.
 - When you fix a bug, add a regression test that fails before the fix and passes after.
@@ -70,12 +69,12 @@ stop and raise it rather than working around it.
 - Color contrast meets AA (>= 4.5:1 for text). Never convey meaning by color alone.
 - Forms have associated labels and clear, programmatically linked error messages.
 - Respect `prefers-reduced-motion`; provide non-animated paths for essential content.
-- Set the correct `lang` attribute per locale (`en`/`ta`/`kn`).
+- Set `lang="en"` on the document.
 
 ## SEO (expanded)
 - One `<h1>` per page; headings form a logical outline.
-- Descriptive, unique `<title>` and meta description per page and per locale.
-- Canonical URLs on every page; `hreflang` alternates across `en`/`ta`/`kn`.
+- Descriptive, unique `<title>` and meta description per page.
+- Canonical URLs on every page.
 - Crawlable links (real `<a href>`), clean human-readable slugs, no orphan pages.
 - Structured data (JSON-LD) validates without errors.
 - Maintain 301 redirects via the `Redirects` collection; avoid redirect chains.

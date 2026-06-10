@@ -3,8 +3,7 @@ import { buildCollection } from "@cms/collections/build-collection";
 import type { CollectionConfig } from "payload";
 
 /**
- * Student testimonials for the homepage section. Quote and course context are localized; drag to
- * reorder via the shared `order` field.
+ * Student testimonials for the homepage section. Drag to reorder via the shared `order` field.
  */
 export const Testimonials: CollectionConfig = buildCollection({
   slug: "testimonials",
@@ -26,13 +25,11 @@ export const Testimonials: CollectionConfig = buildCollection({
     {
       name: "quote",
       type: "textarea",
-      localized: true,
       required: true,
     },
     {
       name: "course",
       type: "text",
-      localized: true,
       admin: { description: "Course or context for this testimonial." },
     },
   ],

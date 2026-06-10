@@ -4,7 +4,7 @@ import type { CollectionConfig } from "payload";
 
 /**
  * Site navigation menus (e.g. "header", "footer"). Each menu owns a drag-orderable list of items
- * with localized labels. Why a collection (not a global): supports multiple named menus and reuses
+ * with menu labels. Why a collection (not a global): supports multiple named menus and reuses
  * the shared base (order/active/soft-delete) consistently.
  */
 export const Navigation: CollectionConfig = buildCollection({
@@ -32,7 +32,6 @@ export const Navigation: CollectionConfig = buildCollection({
         {
           name: "column",
           type: "text",
-          localized: true,
           admin: {
             description:
               "Footer column heading this link sits under (e.g. 'Company', 'Learn', 'Support'). Items sharing a column render together. Leave empty for header menus.",
@@ -41,7 +40,6 @@ export const Navigation: CollectionConfig = buildCollection({
         {
           name: "label",
           type: "text",
-          localized: true,
           required: true,
         },
         {

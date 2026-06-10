@@ -1,24 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import { absoluteUrl, localePath } from "./urls";
-
-describe("localePath", () => {
-  it("leaves the default locale (en) unprefixed", () => {
-    expect(localePath("/about", "en")).toBe("/about");
-    expect(localePath("/", "en")).toBe("/");
-  });
-
-  it("prefixes non-default locales", () => {
-    expect(localePath("/about", "ta")).toBe("/ta/about");
-    expect(localePath("/", "kn")).toBe("/kn");
-  });
-});
+import { absoluteUrl } from "./urls";
 
 describe("absoluteUrl", () => {
-  it("joins origin and locale path, trimming a trailing slash on the origin", () => {
-    expect(absoluteUrl("/about", "en", "https://example.com/")).toBe("https://example.com/about");
-    expect(absoluteUrl("/about", "ta", "https://example.com")).toBe(
-      "https://example.com/ta/about",
-    );
+  it("joins origin and path, trimming a trailing slash on the origin", () => {
+    expect(absoluteUrl("/about", "https://example.com/")).toBe("https://example.com/about");
+    expect(absoluteUrl("/about", "https://example.com")).toBe("https://example.com/about");
+  });
+
+  it("maps the root path to a trailing slash", () => {
+    expect(absoluteUrl("/", "https://example.com")).toBe("https://example.com/");
+  });
+
+  it("normalizes a path missing its leading slash", () => {
+    expect(absoluteUrl("blog", "https://example.com")).toBe("https://example.com/blog");
   });
 });

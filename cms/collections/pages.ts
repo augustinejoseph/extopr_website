@@ -5,8 +5,8 @@ import { revalidateHook } from "@cms/hooks/revalidate";
 import type { CollectionConfig } from "payload";
 
 /**
- * Generic marketing pages (home, about, pricing, contact). Title and body are localized; the
- * shared SEO group drives per-locale metadata. Slug is the human-readable URL segment.
+ * Generic marketing pages (home, about, pricing, contact). The shared SEO group drives metadata.
+ * Slug is the human-readable URL segment.
  */
 export const Pages: CollectionConfig = buildCollection({
   slug: "pages",
@@ -22,7 +22,6 @@ export const Pages: CollectionConfig = buildCollection({
     {
       name: "title",
       type: "text",
-      localized: true,
       required: true,
     },
     {
@@ -36,7 +35,6 @@ export const Pages: CollectionConfig = buildCollection({
     {
       name: "body",
       type: "richText",
-      localized: true,
     },
     seoField(),
   ],

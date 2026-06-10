@@ -23,7 +23,6 @@ export const ExamCategories: CollectionConfig = buildCollection({
     {
       name: "name",
       type: "text",
-      localized: true,
       required: true,
       admin: { description: "Display name, e.g. 'NEET', 'JEE Main', 'CA Foundation'." },
     },
@@ -49,7 +48,6 @@ export const ExamCategories: CollectionConfig = buildCollection({
     {
       name: "batchCount",
       type: "text",
-      localized: true,
       admin: { description: "Display-only count shown on the chip, e.g. '2.1k batches'." },
     },
     {

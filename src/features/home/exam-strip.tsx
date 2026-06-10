@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { getExamCategories } from "@/lib/cms/queries";
-import { type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
 
 /**
@@ -9,8 +8,8 @@ import { getTranslator } from "@/lib/i18n/messages";
  * (CLAUDE.md: never hard-code the exam set in components). Each chip links to the Courses section.
  * Server Component; renders nothing when no categories exist.
  */
-export async function ExamStrip({ locale }: { locale: Locale }) {
-  const [exams, t] = [await getExamCategories(locale), getTranslator(locale)];
+export async function ExamStrip() {
+  const [exams, t] = [await getExamCategories(), getTranslator()];
   if (exams.length === 0) return null;
 
   return (

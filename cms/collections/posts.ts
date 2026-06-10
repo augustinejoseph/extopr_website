@@ -5,7 +5,7 @@ import { revalidateHook } from "@cms/hooks/revalidate";
 import type { CollectionConfig } from "payload";
 
 /**
- * Blog posts. Localized title/excerpt/body; SEO group for per-locale metadata and BlogPosting
+ * Blog posts. Title, excerpt, and body; SEO group for metadata and BlogPosting
  * JSON-LD on the post page. `publishedAt` drives ordering of the "latest posts" homepage strip.
  */
 export const Posts: CollectionConfig = buildCollection({
@@ -23,7 +23,6 @@ export const Posts: CollectionConfig = buildCollection({
     {
       name: "title",
       type: "text",
-      localized: true,
       required: true,
     },
     {
@@ -36,12 +35,10 @@ export const Posts: CollectionConfig = buildCollection({
     {
       name: "excerpt",
       type: "textarea",
-      localized: true,
     },
     {
       name: "body",
       type: "richText",
-      localized: true,
     },
     {
       name: "author",
@@ -58,7 +55,6 @@ export const Posts: CollectionConfig = buildCollection({
     {
       name: "readTime",
       type: "text",
-      localized: true,
       admin: { description: "Display read time, e.g. '6 min read'." },
     },
     {

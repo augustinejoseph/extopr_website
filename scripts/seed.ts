@@ -1,8 +1,7 @@
 /**
- * Seeds the database with sample localized content for local development.
+ * Seeds the database with sample content for local development.
  *
- * Why: gives the homepage and admin real data to render and demonstrates the en/ta/kn fallback
- * (some regional translations are intentionally omitted so the en value shows). Idempotent-ish:
+ * Why: gives the homepage and admin real data to render. The site is English-only. Idempotent-ish:
  * it skips seeding when an admin user already exists, so re-running does not duplicate content.
  *
  * Images are generated in-process with sharp (no network dependency) and uploaded through the
@@ -66,7 +65,6 @@ async function seedSettings(payload: Payload): Promise<void> {
   // Without the social URLs the footer social icons stay hidden (they render only when set).
   await payload.updateGlobal({
     slug: "site-settings",
-    locale: "en",
     data: {
       hero: {
         badge: "Trusted by 10,000+ rankers",
@@ -136,13 +134,11 @@ async function seedSettings(payload: Payload): Promise<void> {
     await payload.update({
       collection: "navigation",
       id: existingFooter.docs[0].id,
-      locale: "en",
       data: { items: footerItems },
     });
   } else {
     await payload.create({
       collection: "navigation",
-      locale: "en",
       data: { location: "footer", order: 0, items: footerItems },
     });
   }
@@ -181,10 +177,9 @@ async function seed(): Promise<void> {
   const avatar2 = await uploadImage(payload, "avatar-ravi.png", "Ravi", 200, 200, "#64748b");
   const postCover = await uploadImage(payload, "post-study-tips.png", "Study tips cover", 1200, 630, "#1d4ed8");
 
-  // 3) Navigation (header + footer) with localized labels (ta/kn partial -> en fallback).
+  // 3) Navigation (header + footer).
   await payload.create({
     collection: "navigation",
-    locale: "en",
     data: {
       location: "header",
       order: 0,
@@ -199,10 +194,9 @@ async function seed(): Promise<void> {
   // Footer navigation + SiteSettings global (incl. footer social links). Shared idempotent helper.
   await seedSettings(payload);
 
-  // 4) Hero carousel slides (achievement/caption localized; ta provided for the first only).
-  const hero1 = await payload.create({
+  // 4) Hero carousel slides.
+  await payload.create({
     collection: "hero-carousel",
-    locale: "en",
     data: {
       order: 0,
       image: heroImg1,
@@ -212,17 +206,9 @@ async function seed(): Promise<void> {
       caption: "From struggling with algebra to topping her class.",
     },
   });
-  // Add a Tamil translation for the first slide to demonstrate localization.
-  await payload.update({
-    collection: "hero-carousel",
-    id: hero1.id,
-    locale: "ta",
-    data: { achievement: "மாநில வாரியத்தில் சிறப்புத் தேர்ச்சி" },
-  });
 
   await payload.create({
     collection: "hero-carousel",
-    locale: "en",
     data: {
       order: 1,
       image: heroImg2,
@@ -234,7 +220,6 @@ async function seed(): Promise<void> {
   });
   await payload.create({
     collection: "hero-carousel",
-    locale: "en",
     data: {
       order: 2,
       image: heroImg3,
@@ -245,10 +230,9 @@ async function seed(): Promise<void> {
     },
   });
 
-  // 5) Testimonials (quote localized; one with a Kannada translation).
-  const testimonial1 = await payload.create({
+  // 5) Testimonials.
+  await payload.create({
     collection: "testimonials",
-    locale: "en",
     data: {
       order: 0,
       studentName: "Aisha Rahman",
@@ -257,16 +241,9 @@ async function seed(): Promise<void> {
       course: "Class 12 Mathematics",
     },
   });
-  await payload.update({
-    collection: "testimonials",
-    id: testimonial1.id,
-    locale: "kn",
-    data: { quote: "ಪಾಠಗಳು ಸ್ಪಷ್ಟವಾಗಿದ್ದವು ಮತ್ತು ಮಾರ್ಗದರ್ಶಕರು ನನ್ನ ಪ್ರಗತಿಯ ಬಗ್ಗೆ ನಿಜವಾಗಿಯೂ ಕಾಳಜಿ ವಹಿಸಿದರು." },
-  });
 
   await payload.create({
     collection: "testimonials",
-    locale: "en",
     data: {
       order: 1,
       studentName: "Ravi Kumar",
@@ -276,22 +253,19 @@ async function seed(): Promise<void> {
     },
   });
 
-  // 6) Videos (lite-facade YouTube ids; title localized).
+  // 6) Videos (lite-facade YouTube ids).
   await payload.create({
     collection: "videos",
-    locale: "en",
     data: { order: 0, title: "How our mentorship works", youtubeId: "ysz5S6PUM-U" },
   });
   await payload.create({
     collection: "videos",
-    locale: "en",
     data: { order: 1, title: "A day in the life of an extopr learner", youtubeId: "aqz-KE-bpKQ" },
   });
 
-  // 7) Blog posts (one with full SEO + ta title).
-  const post1 = await payload.create({
+  // 7) Blog posts (one with full SEO).
+  await payload.create({
     collection: "posts",
-    locale: "en",
     data: {
       order: 0,
       title: "Five study habits that actually work",
@@ -305,16 +279,9 @@ async function seed(): Promise<void> {
       },
     },
   });
-  await payload.update({
-    collection: "posts",
-    id: post1.id,
-    locale: "ta",
-    data: { title: "உண்மையில் பயனளிக்கும் ஐந்து படிப்புப் பழக்கங்கள்" },
-  });
 
   await payload.create({
     collection: "posts",
-    locale: "en",
     data: {
       order: 1,
       title: "Choosing the right course for your goals",
@@ -327,7 +294,6 @@ async function seed(): Promise<void> {
   // 8) A course landing teaser (marketing copy only; deep links into the LMS when configured).
   await payload.create({
     collection: "course-landing",
-    locale: "en",
     data: {
       order: 0,
       title: "Class 12 Mathematics",
@@ -344,7 +310,6 @@ async function seed(): Promise<void> {
   // 9) A couple of marketing pages.
   await payload.create({
     collection: "pages",
-    locale: "en",
     data: {
       order: 0,
       title: "About extopr",

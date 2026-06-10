@@ -106,14 +106,14 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'ta' | 'kn') | ('en' | 'ta' | 'kn')[];
+  fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: 'en' | 'ta' | 'kn';
+  locale: null;
   widgets: {
     collections: CollectionsWidget;
   };
@@ -273,11 +273,11 @@ export interface Page {
   } | null;
   seo?: {
     /**
-     * Per-locale <title>. Falls back to the page title if empty.
+     * <title> for this page. Falls back to the page title if empty.
      */
     title?: string | null;
     /**
-     * Meta description for this locale.
+     * Meta description.
      */
     description?: string | null;
     /**
@@ -350,11 +350,11 @@ export interface Post {
   publishedAt?: string | null;
   seo?: {
     /**
-     * Per-locale <title>. Falls back to the page title if empty.
+     * <title> for this page. Falls back to the page title if empty.
      */
     title?: string | null;
     /**
-     * Meta description for this locale.
+     * Meta description.
      */
     description?: string | null;
     /**
@@ -614,11 +614,11 @@ export interface CourseLanding {
   lmsUrl?: string | null;
   seo?: {
     /**
-     * Per-locale <title>. Falls back to the page title if empty.
+     * <title> for this page. Falls back to the page title if empty.
      */
     title?: string | null;
     /**
-     * Meta description for this locale.
+     * Meta description.
      */
     description?: string | null;
     /**

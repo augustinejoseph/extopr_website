@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation";
-
 import { JsonLd } from "@/components/seo/json-ld";
 import { env } from "@/config/env";
 import { Courses } from "@/features/home/courses";
@@ -12,7 +10,6 @@ import { LatestPosts } from "@/features/home/latest-posts";
 import { Testimonials } from "@/features/home/testimonials";
 import { Why } from "@/features/home/why";
 import { getHeroSlides, getSiteSettings } from "@/lib/cms/queries";
-import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
 import { organizationJsonLd } from "@/lib/seo/json-ld";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -20,19 +17,12 @@ import { resolveImage } from "@/utils/media";
 
 import type { Metadata } from "next";
 
-/** Per-locale metadata for the homepage (title/description/canonical/hreflang/OG). */
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const resolved: Locale = isLocale(locale) ? locale : "en";
+/** Homepage metadata (title/description/canonical/OG). */
+export function generateMetadata(): Metadata {
   return buildMetadata({
     seo: undefined,
     fallbackTitle: "extopr — From aspirant to topper",
     path: "/",
-    locale: resolved,
   });
 }
 
@@ -41,12 +31,9 @@ export async function generateMetadata({
  * only the carousels, course tabs, and CTA form are client-interactive. Editorial copy comes from
  * the SiteSettings global; the single <h1> lives inside Hero. Emits Organization JSON-LD.
  */
-export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-
-  const t = getTranslator(locale);
-  const [heroDocs, settings] = [await getHeroSlides(locale), await getSiteSettings(locale)];
+export default async function HomePage() {
+  const t = getTranslator();
+  const [heroDocs, settings] = [await getHeroSlides(), await getSiteSettings()];
 
   // Map CMS docs to the Hero's slide shape, dropping any slide whose image is unpopulated.
   const slides: HeroSlide[] = heroDocs.flatMap((doc) => {
@@ -67,7 +54,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <JsonLd data={organizationJsonLd({ name: "extopr", url: env.NEXT_PUBLIC_SITE_URL })} />
-      <Header locale={locale} />
+      <Header />
       <main id="main">
         <Hero
           slides={slides}
@@ -77,16 +64,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             goToSlide: t("hero.goToSlide"),
           }}
         />
-        <ExamStrip locale={locale} />
+        <ExamStrip />
         <Why
           eyebrow={t("why.eyebrow")}
           heading={t("why.heading")}
           stats={settings.whyStats}
           asPageHeading
         />
-        <Courses locale={locale} />
-        <Testimonials locale={locale} />
-        <LatestPosts locale={locale} />
+        <Courses />
+        <Testimonials />
+        <LatestPosts />
         <Cta
           copy={{
             heading: settings.cta?.heading || t("cta.heading"),
@@ -104,7 +91,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           }}
         />
       </main>
-      <Footer locale={locale} />
+      <Footer />
     </>
   );
 }

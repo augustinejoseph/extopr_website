@@ -2,21 +2,19 @@ import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
 import { getNavigation } from "@/lib/cms/queries";
-import { type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
 import { cn } from "@/utils/cn";
 
 import { BrandLogo } from "./brand-logo";
-import { LocaleSwitcher } from "./locale-switcher";
 import { NavShell } from "./nav-shell";
 
 /**
- * Site header: brand, primary navigation (from the CMS), locale switcher, and login/register CTAs.
- * Server Component — only the scroll-blur shell and the switcher are interactive. Semantic
- * <header>/<nav> with a skip link target and keyboard-focusable links (accessibility rules).
+ * Site header: brand, primary navigation (from the CMS), and login/register CTAs.
+ * Server Component — only the scroll-blur shell is interactive. Semantic <header>/<nav> with a
+ * skip link target and keyboard-focusable links (accessibility rules).
  */
-export async function Header({ locale }: { locale: Locale }) {
-  const [nav, t] = [await getNavigation("header", locale), getTranslator(locale)];
+export async function Header() {
+  const [nav, t] = [await getNavigation("header"), getTranslator()];
 
   return (
     <header>
@@ -28,7 +26,7 @@ export async function Header({ locale }: { locale: Locale }) {
       </a>
       <NavShell>
         <div className="mx-auto flex h-[68px] max-w-wrap items-center justify-between px-[22px] md:px-10">
-          <BrandLogo locale={locale} className="text-[23px]" />
+          <BrandLogo className="text-[23px]" />
 
           <nav aria-label="Primary" className="hidden items-center gap-[30px] md:flex">
             {nav?.items?.map((item) => (
@@ -55,7 +53,6 @@ export async function Header({ locale }: { locale: Locale }) {
             >
               {t("nav.register")}
             </Link>
-            <LocaleSwitcher current={locale} label={t("localeSwitcher.label")} />
           </div>
         </div>
       </NavShell>

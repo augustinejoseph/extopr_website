@@ -1,5 +1,4 @@
 import { getTestimonials } from "@/lib/cms/queries";
-import { type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
 
 import { SectionHead } from "./section-head";
@@ -12,8 +11,8 @@ const ACCENTS = ["#1F8A5B", "#2C4BFF", "#E8743B", "#9B4DE0"];
  * Topper stories. Server Component: fetches testimonials (admin `order`), prepares plain quote
  * cards, and hands the carousel interactivity to the client. Renders nothing when empty.
  */
-export async function Testimonials({ locale }: { locale: Locale }) {
-  const [items, t] = [await getTestimonials(locale), getTranslator(locale)];
+export async function Testimonials() {
+  const [items, t] = [await getTestimonials(), getTranslator()];
   if (items.length === 0) return null;
 
   const quotes: QuoteCard[] = items.map((item, i) => ({

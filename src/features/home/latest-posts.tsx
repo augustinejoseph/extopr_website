@@ -3,11 +3,9 @@ import Link from "next/link";
 
 import { ButtonArrow,buttonVariants } from "@/components/ui/button";
 import { getLatestPosts } from "@/lib/cms/queries";
-import { type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
 import { cn } from "@/utils/cn";
 import { resolveImage } from "@/utils/media";
-import { localePath } from "@/utils/urls";
 
 import { Eyebrow } from "./section-head";
 
@@ -28,8 +26,8 @@ function asDoc<T extends { id: number }>(rel: T | number | null | undefined): T 
  * "Study Desk" blog strip — the 3 newest posts as design post-cards (category pill, cover or
  * gradient fallback, faculty byline, read time). Server Component; renders nothing when empty.
  */
-export async function LatestPosts({ locale }: { locale: Locale }) {
-  const [posts, t] = [await getLatestPosts(locale, 3), getTranslator(locale)];
+export async function LatestPosts() {
+  const [posts, t] = [await getLatestPosts(3), getTranslator()];
   if (posts.length === 0) return null;
 
   return (
@@ -56,7 +54,7 @@ export async function LatestPosts({ locale }: { locale: Locale }) {
                 className="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-surface transition-all duration-300 ease-smooth hover:-translate-y-1.5 hover:shadow"
               >
                 <Link
-                  href={localePath(`/blog/${post.slug}`, locale)}
+                  href={`/blog/${post.slug}`}
                   className="flex flex-1 flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
                 >
                   <div className="relative grid h-[158px] place-items-center overflow-hidden">
@@ -123,7 +121,7 @@ export async function LatestPosts({ locale }: { locale: Locale }) {
 
         <div className="mt-12 flex justify-center">
           <Link
-            href={localePath("/blog", locale)}
+            href="/blog"
             className={cn(buttonVariants({ variant: "ghost" }), "group")}
           >
             {t("home.latestPosts.viewAll")}

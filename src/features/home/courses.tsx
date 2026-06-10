@@ -1,5 +1,4 @@
 import { getCourseLandings } from "@/lib/cms/queries";
-import { type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
 
 import { type CourseCard, CoursesGrid, type CourseTab } from "./courses-grid";
@@ -27,8 +26,8 @@ function asDoc<T extends { id: number }>(rel: T | number | null | undefined): T 
  * an outbound LMS deep link (lmsUrl), never an in-repo enrollment flow, and prices are display
  * labels. Server Component: prepares plain card data, hands interactivity to CoursesGrid.
  */
-export async function Courses({ locale }: { locale: Locale }) {
-  const [docs, t] = [await getCourseLandings(locale), getTranslator(locale)];
+export async function Courses() {
+  const [docs, t] = [await getCourseLandings(), getTranslator()];
   if (docs.length === 0) return null;
 
   // Group courses by their exam's coarse `group` (falls back to a single "all" tab).

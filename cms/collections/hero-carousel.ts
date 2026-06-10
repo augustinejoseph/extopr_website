@@ -4,7 +4,7 @@ import type { CollectionConfig } from "payload";
 
 /**
  * Hero carousel slides for the homepage — images showing student outcomes. Drag-reorder via the
- * shared `order` field; `active` toggles visibility. Caption is localized with English fallback.
+ * shared `order` field; `active` toggles visibility.
  */
 export const HeroCarousel: CollectionConfig = buildCollection({
   slug: "hero-carousel",
@@ -41,13 +41,11 @@ export const HeroCarousel: CollectionConfig = buildCollection({
     {
       name: "achievement",
       type: "text",
-      localized: true,
       admin: { description: "Result/achievement headline shown on the slide." },
     },
     {
       name: "caption",
       type: "textarea",
-      localized: true,
     },
   ],
 });

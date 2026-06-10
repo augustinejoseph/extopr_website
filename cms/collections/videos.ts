@@ -5,7 +5,7 @@ import type { CollectionConfig } from "payload";
 /**
  * YouTube videos for the homepage section. The site renders a lite facade (thumbnail + play) and
  * loads the YouTube iframe only on click, so we store the video ID and an optional custom
- * thumbnail. Title is localized; drag to reorder via the shared `order` field.
+ * thumbnail. Drag to reorder via the shared `order` field.
  */
 export const Videos: CollectionConfig = buildCollection({
   slug: "videos",
@@ -17,7 +17,6 @@ export const Videos: CollectionConfig = buildCollection({
     {
       name: "title",
       type: "text",
-      localized: true,
       required: true,
     },
     {

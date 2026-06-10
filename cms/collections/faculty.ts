@@ -27,13 +27,11 @@ export const Faculty: CollectionConfig = buildCollection({
     {
       name: "role",
       type: "text",
-      localized: true,
       admin: { description: "Subject / discipline, e.g. 'Physics', 'Accountancy'." },
     },
     {
       name: "credential",
       type: "text",
-      localized: true,
       admin: { description: "Short credential line, e.g. 'AIIMS · 11 yrs teaching'." },
     },
     {
@@ -49,7 +47,6 @@ export const Faculty: CollectionConfig = buildCollection({
     {
       name: "bio",
       type: "richText",
-      localized: true,
       admin: { description: "Longer profile body shown on the Faculty page." },
     },
   ],

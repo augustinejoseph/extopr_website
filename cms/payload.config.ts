@@ -19,15 +19,13 @@ import { buildConfig } from "payload";
 import sharp from "sharp";
 
 import { env } from "@/config/env";
-import { defaultLocale, locales } from "@/lib/i18n/config";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Payload CMS configuration.
  *
- * - Localization is driven by the single i18n config (en default + fallback, ta, kn) so adding a
- *   language is a one-line change there, never here.
+ * - The site is English-only; no Payload localization (single table per collection).
  * - Postgres adapter points at the website's own database (never the LMS database).
  * - Collections are composed from the shared base (order/active/soft-delete) via buildCollection.
  */
@@ -50,12 +48,6 @@ export default buildConfig({
     Videos,
   ],
   globals: [SiteSettings],
-  localization: {
-    locales: [...locales],
-    defaultLocale,
-    // English is the fallback: a missing ta/kn value resolves to en.
-    fallback: true,
-  },
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   db: postgresAdapter({

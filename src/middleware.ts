@@ -1,42 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { defaultLocale, isLocale, locales } from "@/lib/i18n/config";
-
 /**
- * Locale routing middleware.
+ * Request middleware.
  *
- * Why: routes live under /[locale]/... and the locale set must come from the single i18n config.
- * For non-default locales we require the prefix (e.g. /ta/...). The default locale (en) is served
- * unprefixed: requests without a known locale prefix are internally rewritten to the en segment so
- * the canonical public URL stays clean while the App Router still receives a [locale] param.
+ * The site is English-only with no locale prefixes, so the only request-time concern here is
+ * applying CMS-managed redirects (the Redirects collection). Everything else passes through.
  *
  * Excludes admin, API, Next internals, and static assets (handled by the matcher below).
  */
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
-  // CMS-managed redirects take precedence over locale handling so a moved URL 301s cleanly.
+  // CMS-managed redirects: a moved URL 301s cleanly.
   const redirect = await resolveCmsRedirect(request, pathname);
   if (redirect) return redirect;
 
-  const firstSegment = pathname.split("/")[1];
-
-  // A non-default locale prefix is already correct; let it through.
-  if (isLocale(firstSegment) && firstSegment !== defaultLocale) {
-    return NextResponse.next();
-  }
-
-  // Someone hit the default locale explicitly (/en/...): redirect to the clean unprefixed URL.
-  if (firstSegment === defaultLocale) {
-    const url = request.nextUrl.clone();
-    url.pathname = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
-    return NextResponse.redirect(url);
-  }
-
-  // No locale prefix: rewrite to the default-locale segment without changing the visible URL.
-  const url = request.nextUrl.clone();
-  url.pathname = `/${defaultLocale}${pathname}`;
-  return NextResponse.rewrite(url);
+  return NextResponse.next();
 }
 
 /**
@@ -80,6 +59,3 @@ export const config = {
   // Skip Payload admin/api, Next internals, and files with an extension.
   matcher: ["/((?!admin|api|_next|.*\\..*).*)"],
 };
-
-// Re-exported so tests/build can assert the supported set without re-deriving it.
-export { locales };

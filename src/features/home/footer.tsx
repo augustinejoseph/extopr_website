@@ -1,9 +1,7 @@
 import Link from "next/link";
 
 import { getNavigation, getSiteSettings } from "@/lib/cms/queries";
-import { type Locale } from "@/lib/i18n/config";
 import { getTranslator } from "@/lib/i18n/messages";
-import { localePath } from "@/utils/urls";
 
 import { BrandLogo } from "./brand-logo";
 
@@ -63,11 +61,11 @@ function groupByColumn(items: NavItem[]): { heading: string; links: NavItem[] }[
  * bottom legal bar. Server Component; all links are crawlable. Columns come from each nav item's
  * `column` heading so editors control grouping.
  */
-export async function Footer({ locale }: { locale: Locale }) {
+export async function Footer() {
   const [nav, settings, t] = [
-    await getNavigation("footer", locale),
-    await getSiteSettings(locale),
-    getTranslator(locale),
+    await getNavigation("footer"),
+    await getSiteSettings(),
+    getTranslator(),
   ];
   const year = new Date().getFullYear();
   const columns = groupByColumn(nav?.items ?? []);
@@ -91,7 +89,7 @@ export async function Footer({ locale }: { locale: Locale }) {
       <div className="mx-auto max-w-wrap px-[22px] md:px-10">
         <div className="grid gap-[38px] md:grid-cols-[1.4fr_1fr] md:items-start">
           <div>
-            <BrandLogo locale={locale} className="text-[26px]" />
+            <BrandLogo className="text-[26px]" />
             <p className="mt-3.5 max-w-[30ch] text-sm leading-relaxed text-muted-foreground">
               {t("footer.tagline")}
             </p>
@@ -157,7 +155,7 @@ export async function Footer({ locale }: { locale: Locale }) {
               <span key={item.href} className="flex items-center gap-2">
                 {i > 0 ? <span aria-hidden>·</span> : null}
                 <Link
-                  href={localePath(item.href, locale)}
+                  href={item.href}
                   className="font-semibold transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
                 >
                   {item.label}
